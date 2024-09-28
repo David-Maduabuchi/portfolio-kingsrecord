@@ -4,6 +4,17 @@ interface AuthState {
   is_authenticated: boolean;
   profile: Profile;
   redirectionMessage: string;
+  DBdata: {
+    title: string;
+    firstName: string;
+    lastName: string;
+    Date: string;
+    email: string;
+    phoneNumber: string;
+    total: number;
+    partnershipsTotal: number;
+    givingsTotal: number;
+  }[];
 }
 interface Sidebar {
   isSidebarOpen: boolean
@@ -14,29 +25,28 @@ export interface RootState {
   sidebar_reducer: Sidebar 
 }
 
+
 export interface DataTableProps {
   column: {
-    col1: string;
     col2: string;
     col3: string;
     col4: string;
     col5: string;
     col6: string;
     col7: string;
+    col8: string;
+    col9: string;
   }[];
 
-  rows:
-    | {
-        id: number ;
-        tid: string;
-        amount: number;
-        address: string;
-        asset: string;
-        name: string;
-        date: string;
-        time: string;
-        tx_state: string;
-        approved_by: string;
-      }[];
+  rows: {
+    title: string;
+    firstName: string;
+    lastName: string;
+    Date: string;
+    email: string;
+    phoneNumber: string;
+    total: number;
+    partnershipsTotal: number;
+    givingsTotal: number;
+  };
 }
-

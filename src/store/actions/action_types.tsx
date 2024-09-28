@@ -10,6 +10,8 @@ export const LOGIN_FAILURE = "LOGIN_FAILURE";
 
 export const ADD_PROFILE = "ADD_PROFILE";
 
+export const ADD_DATATABLE = "ADD_DATATABLE";
+
 export const REMOVE_PROFILE = "REMOVE_PROFILE";
 
 export const OPEN_SIDEBAR = "OPEN_SIDEBAR";

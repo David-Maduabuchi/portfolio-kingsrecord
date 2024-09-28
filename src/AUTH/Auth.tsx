@@ -17,12 +17,6 @@ const AuthGuard = (props: Auth) => {
 
   useEffect(() => {
     setLoading(true);
-    const storedToken =  localStorage.getItem("userToken")
-    if(storedToken){
-      dispatch({
-        type: ACTIONS.LOGIN_SUCCESS
-      })
-    }
     setTimeout(() => {
       setLoading(false);
     }, 2000);

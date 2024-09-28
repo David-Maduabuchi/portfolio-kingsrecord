@@ -1,7 +1,6 @@
 import "./barChart.scss";
 import Chart from "react-apexcharts";
 import { useState, useMemo, useEffect } from "react";
-import axios from "axios";
 import LoadingBar from "../LoadingBar/LoadingBar";
 
 interface Props {
@@ -10,7 +9,7 @@ interface Props {
 }
 
 const BarChartBox = (props: Props) => {
-  const [chartData, setChartData] = useState<number[]>([]);
+  const [chartData] = useState<number[]>([800, 1300, 2000, 1600, 800, 900]);
   const [graphLoader, setGraphLoader] = useState(false);
   const [xAxisLabels] = useState<string[]>([
     "April",
@@ -21,55 +20,12 @@ const BarChartBox = (props: Props) => {
     "September",
   ]);
 
-  const year = "2024"; // Fixed year for now
-
   useEffect(() => {
-    const months = ["04", "05", "06", "07", "08", "09"];
-    let isMounted = true; // To prevent state updates on unmounted components
-
-    const fetchChartData = async () => {
-      const newChartData: number[] = [];
-
-      try {
-        setGraphLoader(true);
-        // Use Promise.all to handle multiple async requests
-        const requests = months.map((month) =>
-          axios.get(
-            `https://kingsrecord-backend.onrender.com/api/v1/${props.selectedOption.toLowerCase()}/${month}/${year}`,
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-              },
-            }
-          )
-        );
-
-        const responses = await Promise.all(requests);
-
-        // Logging response length and checking structure
-
-        responses.forEach((res) => {
-          if (props.graphInfo) {
-            newChartData.push(res.data.data || 0); // Push the value or 0 if undefined
-          }
-        });
-
-        if (isMounted) {
-          setChartData(newChartData); // Only update state if component is still mounted
-        }
-      } catch (error) {
-        setChartData([]);
-      } finally {
-        setGraphLoader(false);
-      }
-    };
-
-    fetchChartData();
-
-    return () => {
-      isMounted = false; // Cleanup on component unmount
-    };
-  }, [props.selectedOption, props.graphInfo]); // Dependencies
+    setGraphLoader(true);
+    setTimeout(() => {
+      setGraphLoader(false);
+    }, 2000);
+  }, [props.graphInfo]);
 
   const series = useMemo(
     () => [

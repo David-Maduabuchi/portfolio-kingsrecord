@@ -6,7 +6,6 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { NavLink, useNavigate } from "react-router-dom";
 import Toast from "@/components/toast/Toast";
-import axios from "axios";
 import LoadingBar from "@/components/LoadingBar/LoadingBar";
 import { smoothScrollTo } from "@/interface/functions";
 
@@ -22,9 +21,7 @@ export default function SignUp() {
     title: "",
     firstName: "",
     lastName: "",
-    chapter: "",
     email: "",
-    phoneNumber: "",
     password: "",
   });
 
@@ -47,35 +44,28 @@ export default function SignUp() {
   const validateField = () => {
     // Explicitly type the error object
     if (!formData.title) {
-      newErrors.title =
-        "“The Lord’s title is 'I AM', what title do you stand with?”";
+      newErrors.title = "No name specified";
     }
     if (!formData.firstName) {
-      newErrors.firstName = "“God knows your name—let us know too!”";
+      newErrors.firstName = "What is your name?";
     }
     if (!formData.lastName) {
       newErrors.lastName =
-        "“Declare your last name, as you walk in His grace!”";
+        "Declare your last name";
     }
-    if (!formData.chapter) {
-      newErrors.chapter = "“What chapter of BLW are you in today?”";
-    }
+  
     if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email =
         "“Stay connected! A valid email keeps us in fellowship.”";
     }
-    if (!formData.phoneNumber) {
-      newErrors.phoneNumber =
-        "“We’d love to reach out—please provide your number!”";
-    }
     if (formData.password.length < 8) {
       newErrors.password =
-        "“Even the armor of God is strong—your password needs strength too!”";
+        "passwords must be at least 8 characters";
     }
     if (confirmPassword !== formData.password) {
       newErrors.confirmPassword =
-        "“Unity is strength—make sure both passwords match!”";
-    }
+        "passwords do not match";
+    } 
 
     return newErrors;
   };
@@ -95,74 +85,29 @@ export default function SignUp() {
       smoothScrollTo(firstInvalidField, 500); // Slow scroll (1000ms)
       firstInvalidField.focus();
     }
-    setFormData((prevData) => ({
-      ...prevData,
-      chapter: prevData.chapter.toUpperCase(),
-    }));
-
-    const formDataToSend = new FormData();
-    formDataToSend.append("title", formData.title);
-    formDataToSend.append("firstName", formData.firstName);
-    formDataToSend.append("lastName", formData.lastName);
-    formDataToSend.append("chapter", formData.chapter.toUpperCase());
-    formDataToSend.append("email", formData.email);
-    formDataToSend.append("password", formData.password);
-    formDataToSend.append("phoneNumber", formData.phoneNumber);
 
     const validationErrors = validateField();
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
       setLoading(true);
-      axios
-        .post(
-          "https://kingsrecord-backend.onrender.com/api/v1/admin-register",
-          formDataToSend
-        )
-        .then(() => {
-          setLoading(false);
-          setToastType("success");
-          setSuccessMessage("Info has been entered into the book of life");
-          setTimeout(() => {
-            navigate("/signin");
-            setToastType(""); // Reset after navigation
-          }, 3000);
-        })
-        .catch((err) => {
-          console.log(err);
-          if (err.response.data.error === "Email already exists") {
-            newErrors.email =
-              "Do not be covetious, this email belongs to another!";
-            // MARK EMAIL FIELD AS INVALID TO ENABLE SCROLLING TO EMAIL FIELD
-            const emailField = document.querySelector(
-              '[name="email"]'
-            ) as HTMLInputElement;
-            if (emailField) {
-              emailField.setAttribute("aria-invalid", "true");
-              smoothScrollTo(emailField, 500); // Slow scroll (1000ms)
-              emailField.focus();
-            }
-          }
-
-          console.log("ooo");
-          setLoading(false);
-          setToastType("error");
-          setTimeout(() => {
-            setToastType(""); // Reset toast on error
-          }, 5000);
-        })
-        .finally(() => {
-          console.log("Signin Complete");
-        });
+      // wait for 1.5s before navigating to signin, authentication has been removed
+      setTimeout(() => {
+        setLoading(false);
+        setToastType("success");
+        setSuccessMessage("Info has been entered into the book of life");
+        setTimeout(() => {
+          navigate("/signin");
+          setToastType(""); // Reset after navigation
+        }, 3000);
+      }, 1500);
     }
   };
 
   function capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
-  function capitals(string: string) {
-    return string.toUpperCase();
-  }
+  
 
   //this section displays stylish loader
   const [loadingBar, setloadingBar] = useState(true);
@@ -170,7 +115,7 @@ export default function SignUp() {
   useEffect(() => {
     setTimeout(() => {
       setloadingBar(false);
-    }, 2000);
+    }, 1500);
   });
   if (loadingBar) return <LoadingBar height="90vh" />;
 
@@ -232,18 +177,7 @@ export default function SignUp() {
             <span>{errors.lastName}</span>
           </div>
 
-          <div>
-            <InputField
-              type="text"
-              label="Chapter"
-              placeholder="eg. BLW UNN"
-              required
-              name="chapter"
-              value={capitals(formData.chapter)}
-              onChange={handleChange}
-            />
-            <span>{errors.chapter}</span>
-          </div>
+         
           <div>
             <InputField
               type="email"
@@ -258,19 +192,6 @@ export default function SignUp() {
             <span>{errors.email}</span>
           </div>
 
-          <div>
-            <InputField
-              type="text"
-              label="Phone Number"
-              placeholder="08164413182"
-              required
-              autoComplete="phone-number"
-              name="phoneNumber"
-              value={formData.phoneNumber}
-              onChange={handleChange}
-            />
-            <span>{errors.phoneNumber}</span>
-          </div>
           <div>
             <InputField
               type="password"

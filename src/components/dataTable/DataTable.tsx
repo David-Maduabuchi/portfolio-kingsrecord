@@ -1,6 +1,6 @@
 import "./dataTable.scss";
 
-interface Props {
+export interface DataTableProps {
   column: {
     col2: string;
     col3: string;
@@ -25,12 +25,12 @@ interface Props {
   }[];
 }
 
-const DataTable = (props: Props) => {
+const DataTable = (props: DataTableProps) => {
   if (props.rows.length === 0) {
     return (
       <div className="spread-sheet-no-data">
         <img src="/svg/InvalidGraph.svg" />
-        <span>The scrolls have been opened, yet no names were found!</span>
+        <span>No records found!</span>
       </div>
     );
   }

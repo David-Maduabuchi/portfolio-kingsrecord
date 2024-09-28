@@ -4,34 +4,45 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import BarChartBox from "@/components/barChart/BarChartBox";
 import LoadingBar from "@/components/LoadingBar/LoadingBar";
+import { useSelector } from "react-redux";
+import { RootState } from "@/interface/general";
 const Overview = () => {
   const { pathname } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   // const [isCardOpen, setIsCardOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Partnership");
-  // const [cardOption, setCardOption] = useState("Yearly");
   const dropdownRef = useRef<HTMLDivElement>(null);
-  // const cardDropdownRef = useRef<HTMLDivElement>(null);
   const options = ["Partnership", "Givings"];
-  // const cardOptions = ["Yearly", "Monthly", "Weekly"];
+  const userRows = useSelector((state: RootState) => {
+    return state.auth_reducer.DBdata;
+  });
 
   useEffect(() => {
-    window.scrollTo(0, 0); // Scroll to the top of the page
+    window.scrollTo(0, 0);
+    // Scroll to the top of the page
   }, [pathname]);
-  //Replace Data with Info from the Database
+
+  const sales = userRows.reduce((totalSales, user) => {
+    return totalSales + user.partnershipsTotal;
+  }, 0); // Initial value is 0
+
+  const purchases = userRows.reduce((totalPurchases, user) => {
+    return totalPurchases + user.givingsTotal;
+  }, 0); // Initial value is 0
+
   const memberShipData = {
     title: "Total Members",
-    api: "https://kingsrecord-backend.onrender.com/api/v1/members",
+    data: userRows.length,
   };
 
   const partnershipData = {
-    api: "https://kingsrecord-backend.onrender.com/api/v1/partnership-yearly/2024",
-    title: "Total Partnership this year",
+    title: "Total Sales",
+    data: `${sales}`,
   };
 
   const givingsData = {
-    api: "https://kingsrecord-backend.onrender.com/api/v1/givings-yearly/2024",
-    title: "total givings this year",
+    title: "Total Purchases",
+    data: `${purchases}`,
   };
 
   // FOR THE BARCHART GRAPH

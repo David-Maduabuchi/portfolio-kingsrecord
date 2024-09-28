@@ -1,3 +1,4 @@
+import { DataTableProps } from "@/interface/general";
 import { Profile } from "../../interface/redux-interface";
 import * as ACTION_TYPES from "./action_types";
 
@@ -26,6 +27,13 @@ export const redirect_message = (action: string) => {
     payload: action
   };
 };
+
+export const add_dataToDB = (action: DataTableProps["rows"]) => {
+  return {
+    type: ACTION_TYPES.ADD_DATATABLE,
+    payload: action
+  }
+}
 
 export const login_success = () => {
   return {

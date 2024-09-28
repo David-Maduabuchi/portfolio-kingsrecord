@@ -2,11 +2,11 @@ import { ChangeEvent, useEffect, useState, FormEvent, useRef } from "react";
 import "./addData.scss";
 import LoadingBar from "@/components/LoadingBar/LoadingBar";
 import InputField from "@/components/inputField/InputField";
-import OptionsField from "@/components/optionsField/OptionField";
-import axios from "axios";
 import Toast from "@/components/toast/Toast";
+import * as ACTIONS from "../../store/actions/action_types";
 import { smoothScrollTo } from "@/interface/functions";
 import { format } from "date-fns";
+import { useDispatch } from "react-redux";
 const initialState = {
   title: "",
   firstName: "",
@@ -14,9 +14,7 @@ const initialState = {
   Date: "",
   email: "",
   phoneNumber: "",
-  partnershipsType: "",
   partnershipAmount: "",
-  givingsType: "",
   givingsAmount: "",
 };
 const AddData = () => {
@@ -25,6 +23,7 @@ const AddData = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const formRef = useRef<HTMLFormElement>(null);
+  const dispatch = useDispatch();
   // DEFINE FORM DATA
   // DELETE OPTIONS FIELD
   // UPDATE FORM DATA CORRECTLY
@@ -34,21 +33,6 @@ const AddData = () => {
 
   // Sample data based on your backend requirements
   const [formData, setFormData] = useState(initialState);
-
-  const raphsodyOfRealitiesOptions = [
-    "Rhapsody of Realities",
-    "Healings Streams",
-    "Campus Ministry",
-    "InnerCity Missions",
-    "Ministry Programs",
-  ];
-
-  const givingsTypeOptions = [
-    "Offering",
-    "Tithes",
-    "Special Seeds",
-    "Donation",
-  ];
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -64,18 +48,6 @@ const AddData = () => {
     }
   };
 
-  const handleOptionsChange = (name: string, value: string) => {
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-    if (errors[name]) {
-      setErrors({
-        ...errors,
-        [name]: "",
-      });
-    }
-  };
   const validateField = () => {
     const newErrors: { [key: string]: string } = {};
 
@@ -94,11 +66,6 @@ const AddData = () => {
     if (!formData.Date)
       newErrors.Date =
         "In the beginning, God set a date – please provide yours.";
-    if (!formData.partnershipsType)
-      newErrors.partnershipsType =
-        "Choose your arm, for 'two are better than one'";
-    if (!formData.givingsType)
-      newErrors.givingsType = "Giving is blessed – choose your type.";
     if (!formData.partnershipAmount)
       newErrors.partnershipAmount =
         "Remember the widow’s mite – select a partnership amount.";
@@ -106,6 +73,10 @@ const AddData = () => {
       newErrors.givingsAmount =
         "For where your treasure is, there your heart will be also";
     return newErrors;
+  };
+
+  const addition = (first: number, second: number) => {
+    return first + second;
   };
 
   const handleSubmit = async (event: FormEvent<HTMLButtonElement>) => {
@@ -127,8 +98,14 @@ const AddData = () => {
     const validationErrors = validateField();
     setErrors(validationErrors);
     console.log(errors);
+
     if (Object.keys(validationErrors).length === 0) {
       setLoading(true);
+
+      // Convert partnershipAmount and givingsAmount to numbers before addition
+      const partnershipAmount =
+        parseFloat(formData.partnershipAmount.toString()) || 0;
+      const givingsAmount = parseFloat(formData.givingsAmount.toString()) || 0;
 
       const formDataToSend = {
         title: formData.title,
@@ -137,51 +114,27 @@ const AddData = () => {
         Date: format(formData.Date, "yyyy-MM-dd"),
         email: formData.email,
         phoneNumber: formData.phoneNumber,
-        partnerships: [
-          {
-            type: formData.partnershipsType,
-            amount: parseInt(formData.partnershipAmount),
-          },
-        ],
-        givings: [
-          {
-            type: formData.givingsType,
-            amount: parseInt(formData.givingsAmount),
-          },
-        ],
+        partnershipsTotal: partnershipAmount,
+        givingsTotal: givingsAmount,
+        total: addition(partnershipAmount, givingsAmount), // Corrected addition
       };
-      axios
-        .put(
-          "https://kingsrecord-backend.onrender.com/api/v1/form-data",
-          formDataToSend,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage
-                .getItem("userToken")
-                ?.toString()}`, // Add your token
-              "Content-Type": "application/json", // Set content type for FormData
-            },
-          }
-        )
-        .then((res) => {
-          setLoading(false);
-          setToastType("success");
-          setToastMessage(res.data.message);
-          setFormData(initialState);
-          setTimeout(() => {
-            setToastType("");
-          }, 3000);
-        })
-        .catch(() => {
-          setLoading(false);
-          setToastType("error");
-          setTimeout(() => {
-            setToastType("");
-          }, 5000);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+
+      console.log(formDataToSend);
+
+      dispatch({
+        type: ACTIONS.ADD_DATATABLE,
+        payload: formDataToSend,
+      });
+
+      setTimeout(() => {
+        setLoading(false);
+        setToastType("success");
+        setToastMessage("User Data Created");
+        setFormData(initialState);
+        setTimeout(() => {
+          setToastType("");
+        }, 3000);
+      }, 1500);
     }
   };
 
@@ -281,16 +234,6 @@ const AddData = () => {
         <h5 className="font-bold">Partnership Arms</h5>
 
         <div>
-          <OptionsField
-            dataLabel="partnershipsType"
-            options={raphsodyOfRealitiesOptions}
-            onInputChange={handleOptionsChange} // Pass handleOptionsChange function from parent
-            label="Select Partnership Arm"
-          />
-          <span className="error-message">{errors.partnershipsType}</span>
-        </div>
-
-        <div>
           <InputField
             type="number"
             name="partnershipAmount"
@@ -307,15 +250,6 @@ const AddData = () => {
       {/* Givings Type Section */}
       <div className="optionsFieldContainer">
         <h5 className="font-bold">Givings Type</h5>
-        <div>
-          <OptionsField
-            dataLabel="givingsType"
-            onInputChange={handleOptionsChange}
-            options={givingsTypeOptions}
-            label={"Select Givings Type"}
-          />
-          <span className="error-message">{errors.givingsType}</span>
-        </div>
 
         <div>
           <InputField

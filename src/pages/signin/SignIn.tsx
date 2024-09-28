@@ -7,7 +7,6 @@ import "./signin.scss";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import LoadingBar from "@/components/LoadingBar/LoadingBar";
-import axios from "axios";
 import Toast from "@/components/toast/Toast";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/interface/general";
@@ -48,20 +47,19 @@ export default function SignIn() {
     setEmailError("");
     setPasswordError("");
     setLoginError("");
-        const form = formRef.current;
+    const form = formRef.current;
 
-        if (form === null) return; // Guard to ensure formRef.current is not null
+    if (form === null) return; // Guard to ensure formRef.current is not null
 
-        // TypeScript now knows `form` is not null, so `querySelector` is safe
-        const firstInvalidField = form.querySelector(
-          ":invalid"
-        ) as HTMLElement | null;
+    // TypeScript now knows `form` is not null, so `querySelector` is safe
+    const firstInvalidField = form.querySelector(
+      ":invalid"
+    ) as HTMLElement | null;
 
-        if (firstInvalidField) {
-          smoothScrollTo(firstInvalidField, 500); // Slow scroll (1000ms)
-          firstInvalidField.focus();
-        }
-
+    if (firstInvalidField) {
+      smoothScrollTo(firstInvalidField, 500); // Slow scroll (1000ms)
+      firstInvalidField.focus();
+    }
 
     // Check if email is empty or invalid
     if (!Email || !/\S+@\S+\.\S+/.test(Email)) {
@@ -75,50 +73,21 @@ export default function SignIn() {
     }
 
     if (Email && password) {
-      const formData = new FormData();
-      formData.append("email", Email);
-      formData.append("password", password);
-
       setLoading(true);
-      axios
-        .post(
-          "https://kingsrecord-backend.onrender.com/api/v1/admin-login",
-          formData
-        )
-        .then((res) => {
-          const userToken = res.data.access_token;
-          localStorage.setItem("userToken", userToken);
-          setLoading(false);
-          setSuccessMessage("Welcome back to Believers Love World");
-          setToastType("success");
-          dispatch({
-            type: ACTIONS.LOGIN_SUCCESS,
-          });
 
-          setTimeout(() => {
-            redirect("/admin-dashboard/overview");
-            setToastType(""); // Reset after navigation
-          }, 3000);
-        })
-        .catch((err) => {
-          if (err.response.data.error === "Invalid email or password") {
-            setPasswordError("This password is not in the book of life");
-          } else {
-            // User not found error
-            setEmailError("This email is not among the sheep of the lord");
-          }
-          setLoading(false);
-          setToastType("error");
-          setTimeout(() => {
-            setToastType(""); // Reset toast on error
-          }, 5000);
-        })
-        .finally(() => {
-          console.log("Signin Complete");
-          setTimeout(() => {
-            setLoginError("");
-          });
+      setTimeout(() => {
+        setLoading(false);
+        setSuccessMessage("Welcome back to Believers Love World");
+        setToastType("success");
+        dispatch({
+          type: ACTIONS.LOGIN_SUCCESS,
         });
+
+        setTimeout(() => {
+          redirect("/admin-dashboard/overview");
+          setToastType(""); // Reset after navigation
+        }, 3000);
+      }, 1500);
     }
   };
 

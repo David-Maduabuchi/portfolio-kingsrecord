@@ -1,10 +1,12 @@
+import { userRows } from "@/data/data";
 import { AuthActionTypes } from "../../interface/redux-interface";
 import * as ACTION_TYPES from "../actions/action_types";
 
 const initialState = {
-  is_authenticated: false,
+  is_authenticated: true,
   profile: null,
-  redirectionMessage: ""
+  redirectionMessage: "",
+  DBdata: userRows,
 };
 
 const AuthReducer = (state = initialState, action: AuthActionTypes) => {
@@ -25,6 +27,11 @@ const AuthReducer = (state = initialState, action: AuthActionTypes) => {
         ...state,
         redirectionMessage: action.payload
       }
+      case ACTION_TYPES.ADD_DATATABLE:
+        return {
+          ...state,
+          DBdata: [...state.DBdata, action.payload]
+        };
     default:
       return state;
   }
