@@ -32,17 +32,17 @@ const Overview = () => {
 
   const memberShipData = {
     title: "Total Transactions ",
-    data: userRows.length,
+    data: $ + userRows.length,
   };
 
   const partnershipData = {
     title: "Total Sales",
-    data: `${sales}`,
+    data: `$${sales}`,
   };
 
   const givingsData = {
     title: "Total Purchases",
-    data: `${purchases}`,
+    data: `$${purchases}`,
   };
 
   // FOR THE BARCHART GRAPH
