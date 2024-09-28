@@ -21,7 +21,7 @@ const Card = (props: Props) => {
         <LoadingBar height="100%" />
       ) : (
         <div>
-          <h3>{props.data}</h3>
+          <h3>${props.data}</h3>
           <h6>{props.title.toUpperCase()}</h6>
         </div>
       )}
