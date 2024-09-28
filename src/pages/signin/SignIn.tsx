@@ -63,12 +63,12 @@ export default function SignIn() {
 
     // Check if email is empty or invalid
     if (!Email || !/\S+@\S+\.\S+/.test(Email)) {
-      setEmailError("“Thou shalt not send without a valid email!”");
+      setEmailError("please provide a valid email");
       return;
     }
     // Check if password is empty or less than 8 characters
     if (!password || password.length < 8) {
-      setPasswordError("“Strong passwords are like strong faith—unbreakable!”");
+      setPasswordError("password must be at least 8 characters");
       return;
     }
 
@@ -111,7 +111,7 @@ export default function SignIn() {
               Welcome to KingsRecord
             </h2>
             <p className="font-normal text-sm">
-              Manage your Ministry Members, Givings and Partnership data
+              Manage your sales and purchase data effectively
             </p>
           </div>
         </div>

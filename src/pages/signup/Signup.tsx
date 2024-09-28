@@ -129,7 +129,7 @@ export default function SignUp() {
               Welcome to KingsRecord
             </h2>
             <p className="font-normal text-sm px-7">
-              Manage your Ministry Members, Givings and Partnership data
+              Manage all your sales and purchase data effectively.
             </p>
           </div>
         </div>
