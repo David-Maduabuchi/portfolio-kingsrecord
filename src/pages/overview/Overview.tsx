@@ -32,7 +32,7 @@ const Overview = () => {
 
   const memberShipData = {
     title: "Total Transactions ",
-    data: `$${userRows.length}`
+    data: userRows.length
   };
 
   const partnershipData = {
