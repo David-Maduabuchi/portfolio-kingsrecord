@@ -31,7 +31,7 @@ const Overview = () => {
   }, 0); // Initial value is 0
 
   const memberShipData = {
-    title: "Total Members",
+    title: "Total Transactions ",
     data: userRows.length,
   };
 
