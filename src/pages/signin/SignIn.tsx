@@ -77,7 +77,7 @@ export default function SignIn() {
 
       setTimeout(() => {
         setLoading(false);
-        setSuccessMessage("Welcome back to Believers Love World");
+        setSuccessMessage("Welcome back to Kings Record App");
         setToastType("success");
         dispatch({
           type: ACTIONS.LOGIN_SUCCESS,

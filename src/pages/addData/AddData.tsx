@@ -52,26 +52,26 @@ const AddData = () => {
     const newErrors: { [key: string]: string } = {};
 
     if (!formData.title)
-      newErrors.title = "Even the Lord had a title - please provide yours.";
+      newErrors.title = "Please provide a title";
     if (!formData.firstName)
-      newErrors.firstName = "Just as God called people by name, what is yours?";
+      newErrors.firstName = "What is your name?";
     if (!formData.lastName)
       newErrors.lastName = "The lineage matters - what is your surname?";
     if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email))
       newErrors.email =
-        "As God sent messages to prophets, we need your email to reach you.";
+        "we need your email to reach you.";
     if (!formData.phoneNumber)
       newErrors.phoneNumber =
-        "How will we call if the trumpet sounds? Please provide your number.";
+        "Please provide your number.";
     if (!formData.Date)
       newErrors.Date =
-        "In the beginning, God set a date – please provide yours.";
+        "what date did this transaction occur?";
     if (!formData.partnershipAmount)
       newErrors.partnershipAmount =
-        "Remember the widow’s mite – select a partnership amount.";
+        "How much did you sell?";
     if (!formData.givingsAmount)
       newErrors.givingsAmount =
-        "For where your treasure is, there your heart will be also";
+        "How much did you buy";
     return newErrors;
   };
 
