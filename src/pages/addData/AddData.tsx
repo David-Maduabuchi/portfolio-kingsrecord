@@ -51,27 +51,20 @@ const AddData = () => {
   const validateField = () => {
     const newErrors: { [key: string]: string } = {};
 
-    if (!formData.title)
-      newErrors.title = "Please provide a title";
-    if (!formData.firstName)
-      newErrors.firstName = "What is your name?";
+    if (!formData.title) newErrors.title = "Please provide a title";
+    if (!formData.firstName) newErrors.firstName = "What is your name?";
     if (!formData.lastName)
       newErrors.lastName = "The lineage matters - what is your surname?";
     if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email))
-      newErrors.email =
-        "we need your email to reach you.";
+      newErrors.email = "we need your email to reach you.";
     if (!formData.phoneNumber)
-      newErrors.phoneNumber =
-        "Please provide your number.";
+      newErrors.phoneNumber = "Please provide your number.";
     if (!formData.Date)
-      newErrors.Date =
-        "what date did this transaction occur?";
+      newErrors.Date = "what date did this transaction occur?";
     if (!formData.partnershipAmount)
-      newErrors.partnershipAmount =
-        "How much did you sell?";
+      newErrors.partnershipAmount = "How much did you sell?";
     if (!formData.givingsAmount)
-      newErrors.givingsAmount =
-        "How much did you buy";
+      newErrors.givingsAmount = "How much did you buy";
     return newErrors;
   };
 
@@ -231,7 +224,7 @@ const AddData = () => {
 
       {/* Partnership Arms Section */}
       <div className="optionsFieldContainer">
-        <h5 className="font-bold">Partnership Arms</h5>
+        <h5 className="font-bold">How much was sold?</h5>
 
         <div>
           <InputField
@@ -249,7 +242,7 @@ const AddData = () => {
 
       {/* Givings Type Section */}
       <div className="optionsFieldContainer">
-        <h5 className="font-bold">Givings Type</h5>
+        <h5 className="font-bold">How much was purchased</h5>
 
         <div>
           <InputField
