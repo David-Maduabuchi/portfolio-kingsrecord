@@ -10,9 +10,9 @@ const Overview = () => {
   const { pathname } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   // const [isCardOpen, setIsCardOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("Partnership");
+  const [selectedOption, setSelectedOption] = useState("Sales");
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const options = ["Partnership", "Givings"];
+  const options = ["Sales", "Purchases"];
   const userRows = useSelector((state: RootState) => {
     return state.auth_reducer.DBdata;
   });
