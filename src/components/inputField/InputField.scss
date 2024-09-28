@@ -1,0 +1,14 @@
+.InputComponent {
+  div {
+    input {
+      border-radius: 15px;
+      padding: 15px 20px;
+      &::placeholder {
+        font-family: Inter, Poppins;
+        font-size: 14px;
+        font-weight: 300;
+        font-style: italic;
+      }
+    }
+  }
+}
