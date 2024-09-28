@@ -44,7 +44,7 @@ export default function SignUp() {
   const validateField = () => {
     // Explicitly type the error object
     if (!formData.title) {
-      newErrors.title = "No name specified";
+      newErrors.title = "title";
     }
     if (!formData.firstName) {
       newErrors.firstName = "What is your name?";
