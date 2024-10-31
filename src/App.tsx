@@ -44,7 +44,7 @@ const DashboardLayout = () => {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      <Route path="/" element={<Navigate to="/signup" />} />
+      <Route path="/" element={<Navigate to="/signin" />} />
       <Route path="/signup/" element={<SignUp />} />
       <Route path="/signin" element={<SignIn />} />
       <Route
