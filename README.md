@@ -1,15 +1,4 @@
 # App Features
-
-cool error messages
-
-loaders
-
-smooth scroll on error message
-
-toast message
-
-error handling
-
-user token handling
-
-page not found.
+This project was built using Vite (React + TypeScript)
+Live link is in the about section of this repository.
+Styling was done using Sass and Styled Components.
